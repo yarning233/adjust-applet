@@ -1,9 +1,12 @@
 // @ts-ignore
-import { reactive, ref, watch } from "vue"
+import { reactive, ref, watch, onMounted } from "vue"
+import ECanvas from '../../components/ec-canvas/index'
+import * as echarts from '../../components/ec-canvas/echarts'
 import styles from './index.module.scss'
 
 export default {
 	name: 'Index',
+	components: { ECanvas },
 	setup() {
 		const state = reactive<{
 			tab11value: string,
@@ -22,7 +25,84 @@ export default {
 			console.log(state.currentYear)
 		})
 
-		const ecCanvasRef = ref(null)
+		let chart;
+		const ecCanvasRef = ref();
+		const initChart = (canvas, width, height, dpr) => {
+			chart = echarts.init(canvas, null, {
+				width,
+				height,
+				devicePixelRatio: dpr,
+			});
+			canvas.setChart(chart);
+			refresh();
+			return chart;
+		}
+		const ec: {
+			lazyLoad?: boolean,
+			onInit: (canvas, width, height, dpr) => void,
+		} = {
+			// lazyLoad: true,
+			onInit: initChart,
+		}
+
+		const refresh = () => {
+			const option = {
+				title: {
+					text: "某站点用户访问来源",
+					subtext: "纯属虚构",
+					left: "center",
+				},
+				tooltip: {
+					trigger: "item",
+					formatter: "{a} \n{b} : {c} ({d}%)",
+				},
+				legend: {
+					orient: "vertical",
+					left: "left",
+					data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+				},
+				series: [
+					{
+						name: "访问来源",
+						type: "pie",
+						radius: "55%",
+						center: ["50%", "60%"],
+						data: [
+							{ value: 335, name: "直接访问" },
+							{ value: 310, name: "邮件营销" },
+							{ value: 234, name: "联盟广告" },
+							{ value: 135, name: "视频广告" },
+							{ value: 1548, name: "搜索引擎" },
+						],
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: "rgba(0, 0, 0, 0.5)",
+							},
+						},
+					},
+				],
+			};
+			chart?.setOption(option);
+		}
+		const init = () => {
+			ecCanvasRef.value.init((canvas, width, height, dpr) => {
+				chart = echarts.init(canvas, null, {
+					width,
+					height,
+					devicePixelRatio: dpr,
+				});
+				canvas.setChart(chart);
+				refresh();
+				return chart;
+			})
+		}
+		onMounted(() => {
+			setTimeout(() => {
+				ec.lazyLoad && init();
+			}, 300);
+		})
 
 		return () => (
 			<view class={styles.container}>
@@ -56,7 +136,7 @@ export default {
 					<nut-tabs v-model={ state.pieChartType }>
 						<nut-tabpane title="院校" style={"backgroundColor: none"}>
 							<view class={ styles.pieChartContent }>
-								<e-canvas ref={ ecCanvasRef } canvas-id={"pieCanvas"} ec={ ec }></e-canvas>
+								<e-canvas ref={ ecCanvasRef } canvas-id="pieCanvas" ec={ ec }></e-canvas>
 							</view>
 						</nut-tabpane>
 						<nut-tabpane title="专业">
