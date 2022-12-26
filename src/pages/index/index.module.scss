@@ -1,0 +1,95 @@
+.container{
+  width: 100%;
+  height: 100vh;
+  background-color: #f1a1b4;
+}
+.header{
+  width: 100%;
+  height: 30px;
+  font-size: 12px;
+  color: #666;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  .headerLogo{
+    background-image: linear-gradient(to right, $primary-color, $primary-color-end);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 14px;
+    width: 50px;
+  }
+}
+
+.vipBox {
+  width: 90%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin: 16px auto;
+  border-radius: 10px;
+}
+
+.searchBar {
+  width: 80%;
+  height: 40px;
+  margin: 30px auto;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.tabBar {
+  width: 90%;
+  height: 40px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: auto;
+  border-radius: 15px;
+
+  .tabContent {
+    width: 120%;
+    height: 40px;
+  }
+
+  .tabs {
+    margin-right: 12px;
+    color: #333;
+    font-size: 14px;
+  }
+}
+
+.current {
+  background-image: linear-gradient(to right, $primary-color, $primary-color-end);
+  -webkit-background-clip: text;
+  color: transparent;
+  width: 50px;
+}
+
+:deep(.nut-tabs__titles) {
+  background-color: #fff;
+}
+
+.pieContain {
+  width: 90%;
+  height: auto;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background-color: #f5f5f5;
+  margin: 10px auto;
+  min-height: 200px;
+}
+
+.pieChartContent {
+  width: 200px;
+  height: 200px;
+}
