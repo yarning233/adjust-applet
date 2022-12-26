@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Button, Toast, Icon, Tabs, TabPane, Sticky } from '@nutui/nutui-taro'
+import { Button, Toast, Icon, Tabs, TabPane, Sticky, SearchBar, InfiniteLoading } from '@nutui/nutui-taro'
 
 import './app.scss'
 
@@ -15,5 +15,7 @@ App.use(Button)
   .use(Tabs)
   .use(TabPane)
   .use(Sticky)
+  .use(SearchBar)
+  .use(InfiniteLoading)
 
 export default App

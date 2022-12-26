@@ -25,7 +25,13 @@ export default {
 
 		const goCollegePage = () => {
 			Taro.navigateTo({
-				url: '/collegeResult'
+				url: '/collgeResult/index'
+			})
+		}
+
+		const goSearchResultPage = () => {
+			Taro.navigateTo({
+				url: '/pages/result/index'
 			})
 		}
 
@@ -53,7 +59,7 @@ export default {
 					<nut-button type="primary">免费解锁</nut-button>
 				</view>
 
-				<view class={styles.searchBar}>输入院校名称、专业名称等关键字搜索</view>
+				<view class={styles.searchBar} onClick={ goSearchResultPage }>输入院校名称、专业名称等关键字搜索</view>
 
 				<view class={styles.tabBar}>
 					<view class={styles.tabContent}>
