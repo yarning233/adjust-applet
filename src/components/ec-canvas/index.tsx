@@ -5,14 +5,20 @@ import Taro from '@tarojs/taro'
 import WxCanvas from './wx-canvas'
 import * as echarts from './echarts'
 
-const props = defineProps<{ canvasId?: string; ec: any }>();
-const uid = `ec-canvas-${Date.now()}`;
-const canvasRef = ref();
-const chart = ref();
-const canvasNode = ref();
-
 const ECanvas = defineComponent({
+  name: 'ECanvas',
+  props: {
+    canvasId: String,
+    ec: {
+      lazyUpdate: Boolean
+    }
+  },
   setup(props) {
+    const uid = `ec-canvas-${Date.now()}`;
+    const canvasRef = ref();
+    const chart = ref();
+    const canvasNode = ref();
+
     function wrapTouch(event) {
       for (let i = 0; i < event.touches.length; ++i) {
         const touch = event.touches[i];
@@ -120,15 +126,17 @@ const ECanvas = defineComponent({
       }
     })
 
+    // @ts-ignore
     return () => (
       <canvas
         type="2d"
         class={[ uid, 'ec-canvas' ]}
-        ref = "canvasRef"
+        ref = { canvasRef }
         canvas-id={ props.canvasId }
         onTouchstart={ touchStart }
         onTouchmove={ touchMove }
         onTouchend={ touchEnd }
+        style="width: 100%; height: 100%;"
       ></canvas>
     )
   }

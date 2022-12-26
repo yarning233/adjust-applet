@@ -1,8 +1,11 @@
 // @ts-ignore
 import { reactive, ref, watch, onMounted } from "vue"
+import Taro from '@tarojs/taro'
 import ECanvas from '../../components/ec-canvas/index'
-import * as echarts from '../../components/ec-canvas/echarts'
 import styles from './index.module.scss'
+import { ecCanvasRef, ec, init } from '../../hooks/useCollegePieChart'
+import { ecCanvasRef2, ec2, init2 } from '../../hooks/useMajorPieChart'
+import { ecCanvasRefLine, ecLine, initLine } from '../../hooks/useFractionLineChart'
 
 export default {
 	name: 'Index',
@@ -20,87 +23,22 @@ export default {
 
 		const years = ref<string[]>(['2023', '2022', '2021', '2020', '2019', '2018'])
 
+		const goCollegePage = () => {
+			Taro.navigateTo({
+				url: '/collegeResult'
+			})
+		}
+
 		watch(() => state.tab11value, () => {
 			state.currentYear = years.value[state.tab11value]
 			console.log(state.currentYear)
 		})
 
-		let chart;
-		const ecCanvasRef = ref();
-		const initChart = (canvas, width, height, dpr) => {
-			chart = echarts.init(canvas, null, {
-				width,
-				height,
-				devicePixelRatio: dpr,
-			});
-			canvas.setChart(chart);
-			refresh();
-			return chart;
-		}
-		const ec: {
-			lazyLoad?: boolean,
-			onInit: (canvas, width, height, dpr) => void,
-		} = {
-			// lazyLoad: true,
-			onInit: initChart,
-		}
-
-		const refresh = () => {
-			const option = {
-				title: {
-					text: "某站点用户访问来源",
-					subtext: "纯属虚构",
-					left: "center",
-				},
-				tooltip: {
-					trigger: "item",
-					formatter: "{a} \n{b} : {c} ({d}%)",
-				},
-				legend: {
-					orient: "vertical",
-					left: "left",
-					data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
-				},
-				series: [
-					{
-						name: "访问来源",
-						type: "pie",
-						radius: "55%",
-						center: ["50%", "60%"],
-						data: [
-							{ value: 335, name: "直接访问" },
-							{ value: 310, name: "邮件营销" },
-							{ value: 234, name: "联盟广告" },
-							{ value: 135, name: "视频广告" },
-							{ value: 1548, name: "搜索引擎" },
-						],
-						emphasis: {
-							itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: "rgba(0, 0, 0, 0.5)",
-							},
-						},
-					},
-				],
-			};
-			chart?.setOption(option);
-		}
-		const init = () => {
-			ecCanvasRef.value.init((canvas, width, height, dpr) => {
-				chart = echarts.init(canvas, null, {
-					width,
-					height,
-					devicePixelRatio: dpr,
-				});
-				canvas.setChart(chart);
-				refresh();
-				return chart;
-			})
-		}
 		onMounted(() => {
 			setTimeout(() => {
-				ec.lazyLoad && init();
+				ec.lazyLoad && init()
+				ec2.lazyLoad && init2()
+				ecLine.lazyLoad && initLine()
 			}, 300);
 		})
 
@@ -115,7 +53,7 @@ export default {
 					<nut-button type="primary">免费解锁</nut-button>
 				</view>
 
-				<view class={styles.searchBar}></view>
+				<view class={styles.searchBar}>输入院校名称、专业名称等关键字搜索</view>
 
 				<view class={styles.tabBar}>
 					<view class={styles.tabContent}>
@@ -135,14 +73,33 @@ export default {
 				<view class={styles.pieContain}>
 					<nut-tabs v-model={ state.pieChartType }>
 						<nut-tabpane title="院校" style={"backgroundColor: none"}>
-							<view class={ styles.pieChartContent }>
-								<e-canvas ref={ ecCanvasRef } canvas-id="pieCanvas" ec={ ec }></e-canvas>
+							<view class={ styles.pieChartContain }>
+								<view class={ styles.pieChartContent }>
+									<e-canvas ref={ ecCanvasRef } canvas-id="pieCanvas" ec={ ec } force-use-old-canvas={ true }></e-canvas>
+								</view>
+								<nut-button type="primary" block onClick={ goCollegePage }>立即查看</nut-button>
 							</view>
 						</nut-tabpane>
 						<nut-tabpane title="专业">
-
+							<view class={styles.pieChartContain}>
+								<view class={styles.pieChartContent}>
+									<e-canvas ref={ ecCanvasRef2 } canvas-id="pieCanvas" ec={ ec2 } force-use-old-canvas={ true }></e-canvas>
+								</view>
+								<nut-button type="primary" block onClick={goCollegePage}>立即查看</nut-button>
+							</view>
 						</nut-tabpane>
 					</nut-tabs>
+				</view>
+
+				{/*	广告 */}
+				<view class={ styles.advance }></view>
+
+				{/* 历年分数线 */}
+				<view class={ styles.fractionContain }>
+					<view class={ styles.fractionTitle }>历年分数线</view>
+					<view class={ styles.fractionContent }>
+						<e-canvas ref={ ecCanvasRefLine } canvas-id="pieCanvas" ec={ ecLine } force-use-old-canvas={ true }></e-canvas>
+					</view>
 				</view>
 			</view>
 		)
