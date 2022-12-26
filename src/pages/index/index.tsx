@@ -12,7 +12,7 @@ export default {
 		}>({
 			tab11value: '1',
 			currentYear: '2022',
-			pieChartType: '1'
+			pieChartType: '0'
 		})
 
 		const years = ref<string[]>(['2023', '2022', '2021', '2020', '2019', '2018'])
@@ -21,6 +21,8 @@ export default {
 			state.currentYear = years.value[state.tab11value]
 			console.log(state.currentYear)
 		})
+
+		const ecCanvasRef = ref(null)
 
 		return () => (
 			<view class={styles.container}>
@@ -51,9 +53,11 @@ export default {
 
 				{/*	饼图-院校专业切换 */}
 				<view class={styles.pieContain}>
-					<nut-tabs v-model={ state.pieChartType } type="smile">
-						<nut-tabpane title="院校">
-
+					<nut-tabs v-model={ state.pieChartType }>
+						<nut-tabpane title="院校" style={"backgroundColor: none"}>
+							<view class={ styles.pieChartContent }>
+								<e-canvas ref={ ecCanvasRef } canvas-id={"pieCanvas"} ec={ ec }></e-canvas>
+							</view>
 						</nut-tabpane>
 						<nut-tabpane title="专业">
 
