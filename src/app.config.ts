@@ -1,7 +1,11 @@
 export default defineAppConfig({
   pages: [
     'pages/index/index',
-    'pages/result/index'
+    'pages/result/index',
+    'pages/find/index',
+    'pages/findContent/index',
+    'pages/my/index',
+    'pages/myContent/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -11,7 +15,7 @@ export default defineAppConfig({
   },
   tabBar: {
     color: '#666',
-    selectedColor: 'orange',
+    selectedColor: '#fc8452',
     position: 'bottom',
     list: [
       {
@@ -25,6 +29,18 @@ export default defineAppConfig({
         iconPath: './assets/images/ping.png',
         selectedIconPath: './assets/images/ping-active.png',
         text: '调剂'
+      },
+      {
+        pagePath: 'pages/find/index',
+        iconPath: './assets/images/college.png',
+        selectedIconPath: './assets/images/college-active.png',
+        text: '发现'
+      },
+      {
+        pagePath: 'pages/my/index',
+        iconPath: './assets/images/me.png',
+        selectedIconPath: './assets/images/me-active.png',
+        text: '我的'
       }
     ]
   }
