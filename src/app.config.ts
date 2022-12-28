@@ -2,6 +2,8 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/result/index',
+    'pages/college/index',
+    'pages/category/index',
     'pages/find/index',
     'pages/findContent/index',
     'pages/my/index',

@@ -25,12 +25,18 @@ export default {
 
 		const goCollegePage = () => {
 			Taro.navigateTo({
-				url: '/collgeResult/index'
+				url: '/pages/college/index'
+			})
+		}
+
+		const goCategoryPage = () => {
+			Taro.navigateTo({
+				url: '/pages/category/index'
 			})
 		}
 
 		const goSearchResultPage = () => {
-			Taro.navigateTo({
+			Taro.switchTab({
 				url: '/pages/result/index'
 			})
 		}
@@ -91,7 +97,7 @@ export default {
 								<view class={styles.pieChartContent}>
 									<e-canvas ref={ ecCanvasRef2 } canvas-id="pieCanvas" ec={ ec2 } force-use-old-canvas={ true }></e-canvas>
 								</view>
-								<nut-button type="primary" block onClick={goCollegePage}>立即查看</nut-button>
+								<nut-button type="primary" block onClick={ goCategoryPage }>立即查看</nut-button>
 							</view>
 						</nut-tabpane>
 					</nut-tabs>
