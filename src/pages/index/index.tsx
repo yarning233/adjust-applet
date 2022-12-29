@@ -1,15 +1,12 @@
 // @ts-ignore
 import { reactive, ref, watch, onMounted } from "vue"
 import Taro from '@tarojs/taro'
-import ECanvas from '../../components/ec-canvas/index'
 import styles from './index.module.scss'
-import { ecCanvasRef, ec, init } from '../../hooks/useCollegePieChart'
-import { ecCanvasRef2, ec2, init2 } from '../../hooks/useMajorPieChart'
-import { ecCanvasRefLine, ecLine, initLine } from '../../hooks/useFractionLineChart'
+import DataChart from "../../components/data-chart"
 
 export default {
 	name: 'Index',
-	components: { ECanvas },
+	components: { DataChart },
 	setup() {
 		const state = reactive<{
 			tab11value: string,
@@ -46,13 +43,113 @@ export default {
 			console.log(state.currentYear)
 		})
 
-		onMounted(() => {
-			setTimeout(() => {
-				ec.lazyLoad && init()
-				ec2.lazyLoad && init2()
-				ecLine.lazyLoad && initLine()
-			}, 300);
-		})
+		const useCollegePieChartData = {
+			title: {
+				text: `全国一共有 872 + 所院校参与调剂`,
+				left: 'center'
+			},
+			tooltip: {
+				trigger: 'item'
+			},
+			color: [
+				"#5470c6",
+				"#91cc75",
+				"#fac858",
+				"#ee6666"
+			],
+			series: [
+				{
+					name: '院校图表',
+					type: 'pie',
+					radius: '50%',
+					data: [
+						{ value: 1048, name: '211' },
+						{ value: 735, name: '985' },
+						{ value: 580, name: '34' },
+						{ value: 484, name: '普通' }
+					],
+					emphasis: {
+						itemStyle: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}
+			]
+		}
+
+		const useFractionLineChartData = {
+			xAxis: {
+				type: 'category',
+				data: ['2023', '2022', '2021', '2019', '2018']
+			},
+			yAxis: {
+				type: 'value'
+			},
+			color: 'orange',
+			series: [
+				{
+					data: [383, 371, 390, 401, 365],
+					type: 'bar',
+					showBackground: true,
+					backgroundStyle: {
+						color: 'rgba(180, 180, 180, 0.2)'
+					}
+				}
+			]
+		}
+
+		const useMajorPieChartData = {
+			title: {
+				text: `全国一共有 30000 + 专业参与调剂`,
+				left: 'center'
+			},
+			tooltip: {
+				trigger: 'item'
+			},
+			color: [
+				'#5470c6',
+				'#91cc75',
+				'#fac858',
+				'#ee6666',
+				'#73c0de',
+				'#3ba272',
+				'#fc8452',
+				'#9a60b4',
+				'#ea7ccc'
+			],
+			series: [
+				{
+					name: '专业图表',
+					type: 'pie',
+					radius: '50%',
+					data: [
+						{ value: 100, name: '01哲学' },
+						{ value: 200, name: '02教育学' },
+						{ value: 300, name: '03法学' },
+						{ value: 400, name: '04教育学' },
+						{ value: 500, name: '05文学' },
+						{ value: 600, name: '06历史学' },
+						{ value: 700, name: '07理学' },
+						{ value: 800, name: '08工学' },
+						{ value: 900, name: '09农学' },
+						{ value: 100, name: '10医学' },
+						{ value: 200, name: '11军事学' },
+						{ value: 300, name: '12管理学' },
+						{ value: 400, name: '13艺术学' },
+						{ value: 500, name: '14交叉学科' },
+					],
+					emphasis: {
+						itemStyle: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}
+			]
+		}
 
 		return () => (
 			<view class={styles.container}>
@@ -87,7 +184,7 @@ export default {
 						<nut-tabpane title="院校" style={"backgroundColor: none"}>
 							<view class={ styles.pieChartContain }>
 								<view class={ styles.pieChartContent }>
-									<e-canvas ref={ ecCanvasRef } canvas-id="pieCanvas" ec={ ec } force-use-old-canvas={ true }></e-canvas>
+									<data-chart option={ useCollegePieChartData } />
 								</view>
 								<nut-button type="primary" block onClick={ goCollegePage }>立即查看</nut-button>
 							</view>
@@ -95,7 +192,7 @@ export default {
 						<nut-tabpane title="专业">
 							<view class={styles.pieChartContain}>
 								<view class={styles.pieChartContent}>
-									<e-canvas ref={ ecCanvasRef2 } canvas-id="pieCanvas" ec={ ec2 } force-use-old-canvas={ true }></e-canvas>
+									<data-chart option={ useMajorPieChartData } />
 								</view>
 								<nut-button type="primary" block onClick={ goCategoryPage }>立即查看</nut-button>
 							</view>
@@ -110,7 +207,7 @@ export default {
 				<view class={ styles.fractionContain }>
 					<view class={ styles.fractionTitle }>历年分数线</view>
 					<view class={ styles.fractionContent }>
-						<e-canvas ref={ ecCanvasRefLine } canvas-id="pieCanvas" ec={ ecLine } force-use-old-canvas={ true }></e-canvas>
+						<data-chart option={ useFractionLineChartData } />
 					</view>
 				</view>
 			</view>
