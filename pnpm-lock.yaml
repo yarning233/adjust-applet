@@ -30,6 +30,7 @@ specifiers:
   babel-preset-taro: 3.5.10
   css-loader: 3.4.2
   echarts-taro3-vue: ^1.0.5
+  echarts4taro3: ^1.1.0
   eslint: ^8.12.0
   eslint-config-taro: 3.5.10
   eslint-plugin-vue: ^8.0.0
@@ -59,6 +60,7 @@ dependencies:
   '@tarojs/taro': 3.5.10_vue@3.2.45
   '@tarojs/taro-h5': 3.5.10_vue@3.2.45
   echarts-taro3-vue: 1.0.5
+  echarts4taro3: 1.1.0
   vue: 3.2.45
 
 devDependencies:
@@ -5576,6 +5578,10 @@ packages:
       '@tarojs/taro': 3.0.8
       vue: 2.7.14
       vue-template-compiler: 2.7.14
+    dev: false
+
+  /echarts4taro3/1.1.0:
+    resolution: {integrity: sha512-rvU4jCfyDJPl7zCwgaykMJPIO5Bkp8vOZOHtDPg5wl17Ho9LWgZs/Foqf9u+uLR4Q9ioTwDrHC4mHuTn4Ju95w==}
     dev: false
 
   /ee-first/1.1.1:

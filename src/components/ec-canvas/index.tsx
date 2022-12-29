@@ -1,5 +1,5 @@
 // @ts-ignore
-import { defineComponent, defineExpose, defineProps, ref, onMounted } from 'vue'
+import { defineComponent, defineExpose, defineProps, ref, onMounted, PropType } from 'vue'
 // @ts-ignore
 import Taro from '@tarojs/taro'
 import WxCanvas from './wx-canvas'
@@ -9,11 +9,9 @@ const ECanvas = defineComponent({
   name: 'ECanvas',
   props: {
     canvasId: String,
-    ec: {
-      lazyUpdate: Boolean
-    }
+    ec: Object as PropType<any>
   },
-  setup(props) {
+  setup(props, { expose }) {
     const uid = `ec-canvas-${Date.now()}`;
     const canvasRef = ref();
     const chart = ref();
@@ -100,7 +98,7 @@ const ECanvas = defineComponent({
         handler.processGesture(wrapTouch(e), 'end');
       }
     };
-    defineExpose({
+    expose({
       init,
     });
     onMounted(() => {
@@ -136,7 +134,7 @@ const ECanvas = defineComponent({
         onTouchstart={ touchStart }
         onTouchmove={ touchMove }
         onTouchend={ touchEnd }
-        style="width: 100%; height: 100%;"
+        style={"width: 100%; height: 100%;"}
       ></canvas>
     )
   }

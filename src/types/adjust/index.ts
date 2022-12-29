@@ -5,6 +5,11 @@ export type AdjustType = {
 	departmentName: string
 }
 
+export type ChartQueryType = {
+	year: '2023' | '2022' | '2021' | '2020' | '2019' |'2018',
+	category: 0 | 1
+}
+
 export interface ResultType {
 	collegeCode: string,
 	collegeName: string,

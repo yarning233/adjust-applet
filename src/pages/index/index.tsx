@@ -3,10 +3,14 @@ import { reactive, ref, watch, onMounted } from "vue"
 import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
 import DataChart from "../../components/data-chart"
+import { ChartQueryType } from '../../types/adjust/index'
+import { queryAdjustList, scoreOverTheYears } from '../../api/adjust'
+import ECanvas from '../../components/ec-canvas/index'
+// import * as echarts from "../../components/ec-canvas/echarts"
 
 export default {
 	name: 'Index',
-	components: { DataChart },
+	components: { DataChart, ECanvas },
 	setup() {
 		const state = reactive<{
 			tab11value: string,
@@ -38,14 +42,23 @@ export default {
 			})
 		}
 
+		const goMyContentPage = () => {
+			Taro.navigateTo({
+				url: '/pages/myContent/index'
+			})
+		}
+
 		watch(() => state.tab11value, () => {
 			state.currentYear = years.value[state.tab11value]
-			console.log(state.currentYear)
 		})
 
-		const useCollegePieChartData = {
+		const collegeChartTotal = ref<number>(0)
+		let collegeChartData = [] as ({name: string, value: number}[])
+		const chartRef = ref()
+
+		const collegeOption = ({
 			title: {
-				text: `全国一共有 872 + 所院校参与调剂`,
+				text: `全国一共有 ${ collegeChartTotal.value } + 所院校参与调剂`,
 				left: 'center'
 			},
 			tooltip: {
@@ -62,12 +75,7 @@ export default {
 					name: '院校图表',
 					type: 'pie',
 					radius: '50%',
-					data: [
-						{ value: 1048, name: '211' },
-						{ value: 735, name: '985' },
-						{ value: 580, name: '34' },
-						{ value: 484, name: '普通' }
-					],
+					data: collegeChartData,
 					emphasis: {
 						itemStyle: {
 							shadowBlur: 10,
@@ -77,30 +85,9 @@ export default {
 					}
 				}
 			]
-		}
+		})
 
-		const useFractionLineChartData = {
-			xAxis: {
-				type: 'category',
-				data: ['2023', '2022', '2021', '2019', '2018']
-			},
-			yAxis: {
-				type: 'value'
-			},
-			color: 'orange',
-			series: [
-				{
-					data: [383, 371, 390, 401, 365],
-					type: 'bar',
-					showBackground: true,
-					backgroundStyle: {
-						color: 'rgba(180, 180, 180, 0.2)'
-					}
-				}
-			]
-		}
-
-		const useMajorPieChartData = {
+		const majorOption = ref({
 			title: {
 				text: `全国一共有 30000 + 专业参与调剂`,
 				left: 'center'
@@ -149,7 +136,83 @@ export default {
 					}
 				}
 			]
+		})
+
+		let scoreLineYearData = [] as string[]
+		let scoreLineValueData = [] as number[]
+
+		const scoreOption = ref({
+			xAxis: {
+				type: 'category',
+				data: scoreLineYearData
+			},
+			yAxis: {
+				type: 'value'
+			},
+			color: 'orange',
+			series: [
+				{
+					data: scoreLineValueData,
+					type: 'bar',
+					showBackground: true,
+					backgroundStyle: {
+						color: 'rgba(180, 180, 180, 0.2)'
+					}
+				}
+			]
+		})
+
+		const queryAdjustChartData = async () => {
+			const res = await queryAdjustList({
+				year: years.value[state.tab11value],
+				category: parseInt(state.pieChartType) as (0 | 1)
+			} as ChartQueryType)
+
+			if (res.code === 200) {
+				if (state.tab11value === '1') {
+					const { count, nineHundred, twoEleven, initiative, selfLineation } = res.data[0]
+
+					collegeChartData = [
+						{
+							name: '985',
+							value: parseInt(nineHundred)
+						},
+						{
+							name: '211',
+							value: parseInt(twoEleven)
+						},
+						{
+							name: '双一流',
+							value: parseInt(initiative)
+						},
+						{
+							name: '自划线',
+							value: parseInt(selfLineation)
+						}
+					]
+					collegeChartTotal.value = count
+
+					chartRef.value.initChart()
+					chartRef.value.refresh()
+					chartRef.value.init()
+				} else {
+				}
+			}
 		}
+
+		const queryScoreLine = async () => {
+			const res = await scoreOverTheYears()
+
+			if (res.code === 200) {
+				scoreLineYearData = res.data.map(item => item.particularYear)
+				scoreLineValueData = res.data.map(item => item.fractionalLine)
+			}
+		}
+
+		onMounted(() => {
+			queryAdjustChartData()
+			queryScoreLine()
+		})
 
 		return () => (
 			<view class={styles.container}>
@@ -159,7 +222,7 @@ export default {
 
 				<view class={styles.vipBox}>
 					<view>一站通 会员</view>
-					<nut-button type="primary">免费解锁</nut-button>
+					<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button>
 				</view>
 
 				<view class={styles.searchBar} onClick={ goSearchResultPage }>输入院校名称、专业名称等关键字搜索</view>
@@ -169,9 +232,7 @@ export default {
 						<nut-tabs v-model={ state.tab11value } type="smile" style={ "backgroundColor: '#fff'" }>
 							{
 								years.value.map((year:string) => {
-									return <nut-tabpane key={ year } title={ year }>
-										{ year + '年' }
-									</nut-tabpane>
+									return <nut-tabpane key={ year } title={ year }></nut-tabpane>
 								})
 							}
 						</nut-tabs>
@@ -184,7 +245,7 @@ export default {
 						<nut-tabpane title="院校" style={"backgroundColor: none"}>
 							<view class={ styles.pieChartContain }>
 								<view class={ styles.pieChartContent }>
-									<data-chart option={ useCollegePieChartData } />
+									<data-chart ref={ chartRef } option={ collegeOption } />
 								</view>
 								<nut-button type="primary" block onClick={ goCollegePage }>立即查看</nut-button>
 							</view>
@@ -192,7 +253,7 @@ export default {
 						<nut-tabpane title="专业">
 							<view class={styles.pieChartContain}>
 								<view class={styles.pieChartContent}>
-									<data-chart option={ useMajorPieChartData } />
+									<data-chart ref={ chartRef } option={ majorOption } />
 								</view>
 								<nut-button type="primary" block onClick={ goCategoryPage }>立即查看</nut-button>
 							</view>
@@ -207,7 +268,7 @@ export default {
 				<view class={ styles.fractionContain }>
 					<view class={ styles.fractionTitle }>历年分数线</view>
 					<view class={ styles.fractionContent }>
-						<data-chart option={ useFractionLineChartData } />
+						<data-chart ref={ chartRef } option={ scoreOption } />
 					</view>
 				</view>
 			</view>
