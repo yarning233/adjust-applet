@@ -3,42 +3,41 @@ import { ref, onMounted, defineComponent, PropType, toRefs } from 'vue'
 import * as echarts from "../ec-canvas/echarts"
 import ECanvas from '../ec-canvas/index'
 
+interface OptionType {
+	title?: object,
+	tooltip?: {
+		trigger: string
+	},
+	color?: string | string[],
+	series?: any[],
+	xAxis?: object,
+	yAxis?: object
+}
+
 const DataChart = defineComponent({
 	components: { ECanvas },
 	props : {
 		option: {
-			type: Object as PropType<any>
+			type: Object as PropType<OptionType>
 		}
 	},
 	setup(props, { expose }) {
 		let chart
-		const { option } = toRefs(props)
+		let { option } = props
 
 		const ecCanvasRef = ref()
-		const initChart = (canvas, width, height, dpr) => {
-			console.log('initChart')
-			chart = echarts.init(canvas, null, {
-				width,
-				height,
-				devicePixelRatio: dpr,
-			})
-			canvas.setChart(chart)
-			refresh()
-			return chart
-		}
-		const ec: {
-			lazyLoad?: boolean,
-			onInit: (canvas, width, height, dpr) => void,
-		} = {
-			// lazyLoad: true,
-			onInit: initChart,
-		}
+		// const initChart = (canvas, width, height, dpr) => {
+		// 	chart = echarts.init(canvas, null, {
+		// 		width,
+		// 		height,
+		// 		devicePixelRatio: dpr,
+		// 	})
+		// 	canvas.setChart(chart)
+		// 	refresh()
+		// 	return chart
+		// }
 
-		const refresh = () => {
-			chart?.setOption(option.value)
-		}
-
-		const init = () => {
+		const init = (opt?: Object) => {
 			ecCanvasRef.value.init((canvas, width, height, dpr) => {
 				chart = echarts.init(canvas, null, {
 					width,
@@ -46,12 +45,27 @@ const DataChart = defineComponent({
 					devicePixelRatio: dpr,
 				})
 				canvas.setChart(chart)
-				refresh()
+				refresh(opt)
 				return chart
 			})
 		}
 
-		expose({ initChart, init, refresh })
+		const ec: {
+			lazyLoad?: boolean,
+			onInit: (canvas, width, height, dpr) => void,
+		} = {
+			// lazyLoad: true,
+			onInit: init,
+		}
+
+		const refresh = (opt?: OptionType) => {
+			if ((opt?.series) !== undefined) {
+				option = opt
+			}
+			chart?.setOption(option)
+		}
+
+		expose({ init })
 
 		onMounted(() => {
 			setTimeout(() => {

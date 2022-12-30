@@ -50,117 +50,23 @@ export default {
 
 		watch(() => state.tab11value, () => {
 			state.currentYear = years.value[state.tab11value]
+			queryAdjustChartData()
 		})
 
-		const collegeChartTotal = ref<number>(0)
-		let collegeChartData = [] as ({name: string, value: number}[])
+		// const collegeChartTotal = ref<number>(0)
+		// let collegeChartData = [] as ({name: string, value: number}[])
 		const chartRef = ref()
+		const majorChartRef = ref()
+		const scoreChartRef = ref()
 
-		const collegeOption = ({
-			title: {
-				text: `全国一共有 ${ collegeChartTotal.value } + 所院校参与调剂`,
-				left: 'center'
-			},
-			tooltip: {
-				trigger: 'item'
-			},
-			color: [
-				"#5470c6",
-				"#91cc75",
-				"#fac858",
-				"#ee6666"
-			],
-			series: [
-				{
-					name: '院校图表',
-					type: 'pie',
-					radius: '50%',
-					data: collegeChartData,
-					emphasis: {
-						itemStyle: {
-							shadowBlur: 10,
-							shadowOffsetX: 0,
-							shadowColor: 'rgba(0, 0, 0, 0.5)'
-						}
-					}
-				}
-			]
-		})
+		const collegeOption = ref()
 
-		const majorOption = ref({
-			title: {
-				text: `全国一共有 30000 + 专业参与调剂`,
-				left: 'center'
-			},
-			tooltip: {
-				trigger: 'item'
-			},
-			color: [
-				'#5470c6',
-				'#91cc75',
-				'#fac858',
-				'#ee6666',
-				'#73c0de',
-				'#3ba272',
-				'#fc8452',
-				'#9a60b4',
-				'#ea7ccc'
-			],
-			series: [
-				{
-					name: '专业图表',
-					type: 'pie',
-					radius: '50%',
-					data: [
-						{ value: 100, name: '01哲学' },
-						{ value: 200, name: '02教育学' },
-						{ value: 300, name: '03法学' },
-						{ value: 400, name: '04教育学' },
-						{ value: 500, name: '05文学' },
-						{ value: 600, name: '06历史学' },
-						{ value: 700, name: '07理学' },
-						{ value: 800, name: '08工学' },
-						{ value: 900, name: '09农学' },
-						{ value: 100, name: '10医学' },
-						{ value: 200, name: '11军事学' },
-						{ value: 300, name: '12管理学' },
-						{ value: 400, name: '13艺术学' },
-						{ value: 500, name: '14交叉学科' },
-					],
-					emphasis: {
-						itemStyle: {
-							shadowBlur: 10,
-							shadowOffsetX: 0,
-							shadowColor: 'rgba(0, 0, 0, 0.5)'
-						}
-					}
-				}
-			]
-		})
+		const majorOption = ref()
 
 		let scoreLineYearData = [] as string[]
 		let scoreLineValueData = [] as number[]
 
-		const scoreOption = ref({
-			xAxis: {
-				type: 'category',
-				data: scoreLineYearData
-			},
-			yAxis: {
-				type: 'value'
-			},
-			color: 'orange',
-			series: [
-				{
-					data: scoreLineValueData,
-					type: 'bar',
-					showBackground: true,
-					backgroundStyle: {
-						color: 'rgba(180, 180, 180, 0.2)'
-					}
-				}
-			]
-		})
+		const scoreOption = ref()
 
 		const queryAdjustChartData = async () => {
 			const res = await queryAdjustList({
@@ -169,33 +75,105 @@ export default {
 			} as ChartQueryType)
 
 			if (res.code === 200) {
-				if (state.tab11value === '1') {
+				if (state.pieChartType === '0') {
 					const { count, nineHundred, twoEleven, initiative, selfLineation } = res.data[0]
 
-					collegeChartData = [
-						{
-							name: '985',
-							value: parseInt(nineHundred)
+					collegeOption.value = {
+						title: {
+							text: `全国一共有 ${ count } + 所院校参与调剂`,
+								left: 'center'
 						},
-						{
-							name: '211',
-							value: parseInt(twoEleven)
+						tooltip: {
+							trigger: 'item'
 						},
-						{
-							name: '双一流',
-							value: parseInt(initiative)
-						},
-						{
-							name: '自划线',
-							value: parseInt(selfLineation)
-						}
-					]
-					collegeChartTotal.value = count
+						color: [
+							"#5470c6",
+							"#91cc75",
+							"#fac858",
+							"#ee6666"
+						],
+						series: [
+							{
+								name: '院校图表',
+								type: 'pie',
+								radius: '50%',
+								data: [
+									{
+										name: '985',
+										value: parseInt(nineHundred)
+									},
+									{
+										name: '211',
+										value: parseInt(twoEleven)
+									},
+									{
+										name: '双一流',
+										value: parseInt(initiative)
+									},
+									{
+										name: '自划线',
+										value: parseInt(selfLineation)
+									}
+								],
+								emphasis: {
+									itemStyle: {
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+								}
+							}
+						]
+					}
 
-					chartRef.value.initChart()
-					chartRef.value.refresh()
-					chartRef.value.init()
+					chartRef.value.init(collegeOption.value)
 				} else {
+					const majorData =  res.data.map(item => {
+						return {name: item.categoryName, value: item.majorcount}
+					})
+
+					let majorDataCount = 0
+					res.data.map((item) => {
+						majorDataCount += item.majorcount
+					})
+
+					majorOption.value = {
+						title: {
+							text: `全国一共有 ${ majorDataCount } + 专业参与调剂`,
+							left: 'center'
+						},
+						tooltip: {
+							trigger: 'item'
+						},
+						color: [
+							'#5470c6',
+							'#91cc75',
+							'#fac858',
+							'#ee6666',
+							'#73c0de',
+							'#3ba272',
+							'#fc8452',
+							'#9a60b4',
+							'#ea7ccc'
+						],
+						series: [
+							{
+								name: '专业图表',
+								type: 'pie',
+								radius: '50%',
+								data: majorData,
+								emphasis: {
+									itemStyle: {
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+								}
+							}
+						]
+					}
+
+					majorChartRef.value.init(majorOption.value)
 				}
 			}
 		}
@@ -206,6 +184,29 @@ export default {
 			if (res.code === 200) {
 				scoreLineYearData = res.data.map(item => item.particularYear)
 				scoreLineValueData = res.data.map(item => item.fractionalLine)
+
+				scoreOption.value = {
+					xAxis: {
+						type: 'category',
+							data: scoreLineYearData
+					},
+					yAxis: {
+						type: 'value'
+					},
+					color: 'orange',
+					series: [
+						{
+							data: scoreLineValueData,
+							type: 'bar',
+							showBackground: true,
+							backgroundStyle: {
+								color: 'rgba(180, 180, 180, 0.2)'
+							}
+						}
+					]
+				}
+
+				scoreChartRef.value.init(scoreOption.value)
 			}
 		}
 
@@ -241,7 +242,7 @@ export default {
 
 				{/*	饼图-院校专业切换 */}
 				<view class={styles.pieContain}>
-					<nut-tabs v-model={ state.pieChartType }>
+					<nut-tabs v-model={ state.pieChartType } onChange={ queryAdjustChartData }>
 						<nut-tabpane title="院校" style={"backgroundColor: none"}>
 							<view class={ styles.pieChartContain }>
 								<view class={ styles.pieChartContent }>
@@ -250,10 +251,10 @@ export default {
 								<nut-button type="primary" block onClick={ goCollegePage }>立即查看</nut-button>
 							</view>
 						</nut-tabpane>
-						<nut-tabpane title="专业">
+						<nut-tabpane title="专业" style={"backgroundColor: none"}>
 							<view class={styles.pieChartContain}>
 								<view class={styles.pieChartContent}>
-									<data-chart ref={ chartRef } option={ majorOption } />
+									<data-chart ref={ majorChartRef } option={ majorOption } />
 								</view>
 								<nut-button type="primary" block onClick={ goCategoryPage }>立即查看</nut-button>
 							</view>
@@ -268,7 +269,7 @@ export default {
 				<view class={ styles.fractionContain }>
 					<view class={ styles.fractionTitle }>历年分数线</view>
 					<view class={ styles.fractionContent }>
-						<data-chart ref={ chartRef } option={ scoreOption } />
+						<data-chart ref={ scoreChartRef } option={ scoreOption } />
 					</view>
 				</view>
 			</view>
