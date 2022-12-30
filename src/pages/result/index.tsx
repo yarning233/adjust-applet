@@ -50,11 +50,7 @@ const Result = defineComponent({
 					customList.value.push(item)
 				})
 
-				// if (currentPage.value === res.data.totalPage) {
-				// 	customHasMore.value = false
-				// }
-
-				if (res.data.list.length < 10) {
+				if (currentPage.value === res.data.totalPage) {
 					customHasMore.value = false
 				}
 
@@ -70,7 +66,7 @@ const Result = defineComponent({
 			<view class={ styles.contain }>
 				<nut-sticky top="0" class={ styles.stickyContain }>
 					<nut-searchbar v-model={ keyWord.value } onSearch={ search } placeholder="请输入关键字进行搜索"></nut-searchbar>
-					<nut-tabs v-model={ state.tab11value } type="smile" onChane={ resetChange }>
+					<nut-tabs v-model={ state.tab11value } type="smile" onChange={ resetChange }>
 						{
 							years.value.map(year => {
 								return <nut-tabpane title={ year }></nut-tabpane>
