@@ -76,57 +76,59 @@ export default {
 
 			if (res.code === 200) {
 				if (state.pieChartType === '0') {
-					const { count, nineHundred, twoEleven, initiative, selfLineation } = res.data[0]
+					if (res.data.length !== 0) {
+						const { count, nineHundred, twoEleven, initiative, selfLineation } = res.data[0]
 
-					collegeOption.value = {
-						title: {
-							text: `全国一共有 ${ count } + 所院校参与调剂`,
+						collegeOption.value = {
+							title: {
+								text: `全国一共有 ${ count } + 所院校参与调剂`,
 								left: 'center'
-						},
-						tooltip: {
-							trigger: 'item'
-						},
-						color: [
-							"#5470c6",
-							"#91cc75",
-							"#fac858",
-							"#ee6666"
-						],
-						series: [
-							{
-								name: '院校图表',
-								type: 'pie',
-								radius: '50%',
-								data: [
-									{
-										name: '985',
-										value: parseInt(nineHundred)
-									},
-									{
-										name: '211',
-										value: parseInt(twoEleven)
-									},
-									{
-										name: '双一流',
-										value: parseInt(initiative)
-									},
-									{
-										name: '自划线',
-										value: parseInt(selfLineation)
-									}
-								],
-								emphasis: {
-									itemStyle: {
-										shadowBlur: 10,
-										shadowOffsetX: 0,
-										shadowColor: 'rgba(0, 0, 0, 0.5)'
+							},
+							tooltip: {
+								trigger: 'item'
+							},
+							color: [
+								"#5470c6",
+								"#91cc75",
+								"#fac858",
+								"#ee6666"
+							],
+							series: [
+								{
+									name: '院校图表',
+									type: 'pie',
+									radius: '50%',
+									data: [
+										{
+											name: '985',
+											value: parseInt(nineHundred)
+										},
+										{
+											name: '211',
+											value: parseInt(twoEleven)
+										},
+										{
+											name: '双一流',
+											value: parseInt(initiative)
+										},
+										{
+											name: '自划线',
+											value: parseInt(selfLineation)
+										}
+									],
+									emphasis: {
+										itemStyle: {
+											shadowBlur: 10,
+											shadowOffsetX: 0,
+											shadowColor: 'rgba(0, 0, 0, 0.5)'
+										}
 									}
 								}
-							}
-						]
-					}
+							]
+						}
 
-					chartRef.value.init(collegeOption.value)
+						chartRef.value.init(collegeOption.value)
+					}
 				} else {
 					const majorData =  res.data.map(item => {
 						return {name: item.categoryName, value: item.majorcount}
