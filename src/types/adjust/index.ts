@@ -13,7 +13,7 @@ export type ChartQueryType = {
 export interface ResultType {
 	collegeCode: string,
 	collegeName: string,
-	collegeAttribute: string[],
+	collegeAttribute: {name: string}[],
 	province: string,
 	year: string,
 	departmentCode: string,
