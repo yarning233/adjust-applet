@@ -13,7 +13,7 @@ const ResultList = defineComponent({
 		return () => (
 			<>
 				{
-					props.customList.map(result => {
+					props.customList.length >0 ? props.customList.map(result => {
 						return <li class={styles.infiniteLi}>
 							<view class={styles.infiniteLiTitle}>
 								<view class={styles.infiniteLiTitleContent}>
@@ -46,7 +46,7 @@ const ResultList = defineComponent({
 								<view class={styles.currentYear}>{result.year + '年'}</view>
 							</view>
 						</li>
-					})
+					}) : <nut-empty image="empty" description="无内容"></nut-empty>
 				}
 			</>
 		)

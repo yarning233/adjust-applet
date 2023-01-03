@@ -14,7 +14,8 @@ import { Button,
   Avatar,
   NoticeBar,
   Uploader,
-  Progress
+  Progress,
+  Empty
 } from '@nutui/nutui-taro'
 
 import './app.scss'
@@ -41,5 +42,6 @@ App.use(Button)
   .use(NoticeBar)
   .use(Uploader)
   .use(Progress)
+  .use(Empty)
 
 export default App
