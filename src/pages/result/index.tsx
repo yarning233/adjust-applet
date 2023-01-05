@@ -41,7 +41,7 @@ const Result = defineComponent({
 			const res = await queryCollegeList({
 				year: years.value[state.tab11value],
 				keywords: keyWord.value,
-				currentPage: ++(currentPage.value) as number,
+				pageNum: ++(currentPage.value) as number,
 				pageSize: pageSize.value
 			})
 

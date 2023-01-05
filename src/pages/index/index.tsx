@@ -6,7 +6,8 @@ import DataChart from "../../components/data-chart"
 import { ChartQueryType } from '../../types/adjust/index'
 import { queryAdjustList, scoreOverTheYears } from '../../api/adjust'
 import ECanvas from '../../components/ec-canvas/index'
-// import * as echarts from "../../components/ec-canvas/echarts"
+import { useAuth } from '../../hooks/useAuth'
+import { AuthType } from '../../types/auth'
 
 export default {
 	name: 'Index',
@@ -21,6 +22,20 @@ export default {
 			currentYear: '2022',
 			pieChartType: '0'
 		})
+
+		const authState = reactive<AuthType>({
+			code: '',
+			avatarUrl: Taro.getStorageSync('avatarUrl'),
+			nickName: Taro.getStorageSync('nickName'),
+			openId: Taro.getStorageSync('openId'),
+			overlayShow: false
+		})
+
+		const {
+			getUserProfile,
+			getPhoneNumber,
+			judgeUserInfo
+		} = useAuth(authState)
 
 		const years = ref<string[]>(['2023', '2022', '2021', '2020', '2019', '2018'])
 
@@ -43,9 +58,12 @@ export default {
 		}
 
 		const goMyContentPage = () => {
-			Taro.navigateTo({
-				url: '/pages/myContent/index'
-			})
+			const res = judgeUserInfo()
+			if (res) {
+				Taro.navigateTo({
+					url: '/pages/myContent/index'
+				})
+			}
 		}
 
 		watch(() => state.tab11value, () => {
@@ -213,6 +231,15 @@ export default {
 		}
 
 		onMounted(() => {
+			Taro.login({
+				success: function (res) {
+					if (res.code) {
+						authState.code = res.code
+					} else {
+						console.log('登录失败！' + res.errMsg)
+					}
+				}
+			})
 			queryAdjustChartData()
 			queryScoreLine()
 		})
@@ -225,7 +252,13 @@ export default {
 
 				<view class={styles.vipBox}>
 					<view>一站通 会员</view>
-					<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button>
+					{
+						!authState.openId ?
+							<nut-button type="primary" onClick={ getUserProfile }>授权个人信息免费解锁</nut-button> :
+						!authState.phone ?
+							<nut-button type="primary" openType="getPhoneNumber" onGetphonenumber={ getPhoneNumber }>授权手机号免费解锁</nut-button> :
+							<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button>
+					}
 				</view>
 
 				<view class={styles.searchBar} onClick={ goSearchResultPage }>输入院校名称、专业名称等关键字搜索</view>

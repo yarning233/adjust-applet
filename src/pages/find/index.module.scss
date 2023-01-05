@@ -50,7 +50,7 @@
 .priceContain {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   color: $primary-color;
   font-size: 12px;
   padding: 5px 10px 15px;
@@ -59,7 +59,6 @@
 .originalPrice {
   font-size: 14px;
   font-weight: bold;
-  margin-right: 15px;
 }
 
 .tagPrice {

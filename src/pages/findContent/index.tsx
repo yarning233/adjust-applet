@@ -1,29 +1,36 @@
 // @ts-ignore
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { useRouter } from '@tarojs/taro'
 import styles from './index.module.scss'
-
-const router = useRouter()
-
-console.log(router.params.id)
+import { getCommodityInfo } from "../../api/adjust"
 
 const FindContent = defineComponent({
 	setup() {
-		const imagesData = ref<string[]>([
-			'//img14.360buyimg.com/n4/jfs/t1/215845/12/3788/221990/618a5c4dEc71cb4c7/7bd6eb8d17830991.jpg',
-			'//img10.360buyimg.com/ling/jfs/t1/181258/24/10385/53029/60d04978Ef21f2d42/92baeb21f907cd24.jpg',
-			'//img14.360buyimg.com/n4/jfs/t1/215845/12/3788/221990/618a5c4dEc71cb4c7/7bd6eb8d17830991.jpg',
-			'//img10.360buyimg.com/ling/jfs/t1/181258/24/10385/53029/60d04978Ef21f2d42/92baeb21f907cd24.jpg',
-			'//img14.360buyimg.com/n4/jfs/t1/215845/12/3788/221990/618a5c4dEc71cb4c7/7bd6eb8d17830991.jpg',
-			'//img10.360buyimg.com/ling/jfs/t1/181258/24/10385/53029/60d04978Ef21f2d42/92baeb21f907cd24.jpg',
-			'//img14.360buyimg.com/n4/jfs/t1/215845/12/3788/221990/618a5c4dEc71cb4c7/7bd6eb8d17830991.jpg',
-			'//img10.360buyimg.com/ling/jfs/t1/181258/24/10385/53029/60d04978Ef21f2d42/92baeb21f907cd24.jpg'
-		])
+		const router = useRouter()
 
-		const qrCode = ref<string>('https://kaoyancun.oss-cn-hangzhou.aliyuncs.com/img/qrCode.png')
+		const imagesData = ref<string[]>([])
 
-		const originalPrice = ref<number>(3699)
-		const postCouponPrice = ref<number>(3599)
+		const qrCode = ref<string>('')
+
+		const shopOriginalPrice = ref<string>('')
+		const shopPostCouponPrice = ref<string>('')
+
+		const getInfo = async () => {
+			const res = await getCommodityInfo(router.params.id! as unknown as number)
+
+			if (res.code === 200) {
+				const { detailsUrl, originalPrice, postCouponPrice, purchasePicUrl } = res.data.list[0]!
+
+				imagesData.value = detailsUrl
+				qrCode.value = purchasePicUrl[0]!
+				shopOriginalPrice.value = originalPrice
+				shopPostCouponPrice.value = postCouponPrice
+			}
+		}
+
+		onMounted(() => {
+			getInfo()
+		})
 
 		return () => (
 			<view class={ styles.contentContain }>
@@ -35,10 +42,10 @@ const FindContent = defineComponent({
 				<view class={ styles.fixBox }>
 					<view class={ styles.fixLeft }>
 						<view class={ styles.fixPrice }>
-							￥<b class={ styles.originalPrice }>{ originalPrice.value }</b>
+							￥<b class={ styles.originalPrice }>{ shopOriginalPrice.value }</b>
 							<nut-tag type="danger">
 								券后￥
-								<b class={ styles.tagPrice }>{ postCouponPrice.value }</b>
+								<b class={ styles.tagPrice }>{ shopPostCouponPrice.value }</b>
 							</nut-tag>
 						</view>
 						<view class={ styles.remark }>

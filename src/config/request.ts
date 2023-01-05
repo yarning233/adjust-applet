@@ -31,6 +31,9 @@ const request = <T = any, U = any>(requestParams: RequestType<T>): Promise<Respo
 				case 200:
 					resolve(res.data)
 					break
+				case 204:
+					resolve(res.data)
+					break
 				case 400:
 					Toast('参数不正确')
 					break

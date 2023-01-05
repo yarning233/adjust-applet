@@ -26,3 +26,33 @@ export interface ResultType {
 	adjustQuota: string,
 	yearsRange: string[]
 }
+
+export interface FirstLevelType {
+	firstLevelDiscipline: string,
+	firstLevelName: string
+}
+
+export interface CategoryType {
+	category: string
+}
+
+export interface ShopType {
+	id: number,
+	tradeName: string,
+	originalPrice: number,
+	postCouponPrice: number,
+	coverUrl: string[]
+}
+
+export interface ShopInfoType {
+	detailsUrl: string[],
+	originalPrice: string,
+	postCouponPrice: string,
+	purchasePicUrl: string[]
+}
+
+export interface UploadType {
+	phone: string,
+	openId: string,
+	picture: string[]
+}

@@ -1,13 +1,16 @@
 export type Pagination = {
-	currentPage: number,
+	currPage?: number,
 	pageNum?: number,
 	pageSize: number,
-	year: number,
+	year?: number,
 	keywords?: string,
 	category?: string[],
 	firstLevelDiscipline?: string[],
 	province?: string[],
-	collegeAttribute?: string[],
+	nineHundred?: string,
+	twoEleven?: string,
+	selfLineation?: string,
+	initiative?: string,
 	total?: number
 }
 

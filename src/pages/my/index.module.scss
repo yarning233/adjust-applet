@@ -41,3 +41,27 @@
   margin: 20px auto 0;
   border-radius: 5px;
 }
+
+.wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapperContent {
+  display: flex;
+  width: 250px;
+  height: 150px;
+  background: #fff;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
