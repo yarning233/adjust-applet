@@ -217,8 +217,7 @@ export default {
 					series: [
 						{
 							data: scoreLineValueData,
-							type: 'bar',
-							showBackground: true,
+							type: 'line',
 							backgroundStyle: {
 								color: 'rgba(180, 180, 180, 0.2)'
 							}
