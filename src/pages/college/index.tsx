@@ -25,9 +25,9 @@ const College = defineComponent({
 		const collegeAttrCheckboxGroup = ref<string[]>([])
 		const collegeProvinceCheckboxGroup = ref<string[]>([])
 		const provinces = ref<string[]>([
-			'北京市','天津市','上海市','重庆市','新疆省','西藏省','青海省','四川省','贵州省','云南省',
-			'广西省','广东省','福建省','江西省','浙江省','湖南省','江苏省','安徽省','湖北省','陕西省',
-			'河南省','山西省','山东省','河北省','吉林省','辽宁省','海南省','甘肃省','宁夏省','内蒙古省','黑龙江省'
+			'北京','天津','上海','重庆','新疆','西藏','青海','四川','贵州','云南',
+			'广西','广东','福建','江西','浙江','湖南','江苏','安徽','湖北','陕西',
+			'河南','山西','山东','河北','吉林','辽宁','海南','甘肃','宁夏','内蒙古','黑龙江'
 		])
 		const collegeAttrRef = ref(null) as Ref
 		const collegeProvinceRef = ref(null) as Ref
@@ -131,7 +131,7 @@ const College = defineComponent({
 					</view>
 
 					<view class={styles.collegeAttrCheckBar}>
-						<view>省市归属：</view>
+						<view>归属：</view>
 						<view class={ styles.checkboxGroupContent }>
 							<nut-checkbox label="全选" onChange={changeCollegeProvince} v-model={ isCheckAllProvince.value }>全选</nut-checkbox>
 							<nut-checkboxgroup v-model={collegeProvinceCheckboxGroup.value} ref={collegeProvinceRef}

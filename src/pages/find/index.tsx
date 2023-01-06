@@ -46,7 +46,7 @@ const Find = defineComponent({
 							leftData.value.map(item => {
 								return <li key={ item.id } class={ styles.coverLi } onClick={ () => goContentPage(item.id) }>
 									<view class={ styles.coverContain }>
-										<img src={ item.coverUrl[0] } alt="cover" class={ styles.cover }/>
+										<image src={ item.coverUrl[0] } mode="center" class={ styles.cover }/>
 									</view>
 									<view class={ styles.shopName }>
 										{ item.tradeName }

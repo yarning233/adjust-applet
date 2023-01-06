@@ -18,13 +18,14 @@ const ResultList = defineComponent({
 							<view class={styles.infiniteLiTitle}>
 								<view class={styles.infiniteLiTitleContent}>
 									<view class={styles.collegeName}>{result.collegeName}</view>
-									{
-										result.collegeAttribute.map(attr => {
-											return <view class={styles.collegeAttr}>{attr.name}</view>
-										})
-									}
 								</view>
 								<view class={styles.province}>{result.province}</view>
+							</view>
+							<view class={ styles.infiniteLiAttr }>
+								{ result.nineHundred ? <view class={styles.collegeAttr}>{result.nineHundred}</view> : '' }
+								{ result.twoEleven ? <view class={styles.collegeAttr}>{result.twoEleven}</view> : '' }
+								{ result.selfLineation ? <view class={styles.collegeAttr}>{result.selfLineation}</view> : '' }
+								{ result.initiative ? <view class={styles.collegeAttr}>{result.initiative}</view> : '' }
 							</view>
 							<view class={styles.infiniteLiContent}>
 								<view class={styles.infiniteLiContentLeft}>

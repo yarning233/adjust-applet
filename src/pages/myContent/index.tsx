@@ -94,7 +94,6 @@ const MyContent = defineComponent({
 							policy,
 							OSSAccessKeyId,
 							signature: Signature,
-							file: tempFilePaths[0],
 							success_action_status: '200'
 						},
 						success(res) {
@@ -124,7 +123,7 @@ const MyContent = defineComponent({
 			const res = await backPicture(Taro.getStorageSync('openId'))
 
 			if (res.code === 200) {
-				res.data[0].imageUrls.map(img => {
+				res.data[0].imageUrls?.map(img => {
 					fileList.value.push(img)
 
 					switch (fileList.value.length) {
