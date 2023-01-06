@@ -324,7 +324,7 @@ export default {
 
 				{/* 历年分数线 */}
 				<view class={ styles.fractionContain }>
-					<view class={ styles.fractionTitle }>历年分数线</view>
+					<view class={ styles.fractionTitle }>教育学近五年国家分数线</view>
 					<view class={ styles.fractionContent }>
 						<data-chart ref={ scoreChartRef } option={ scoreOption } />
 					</view>
