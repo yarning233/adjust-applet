@@ -111,3 +111,16 @@ export const insterAdd = (params: UploadType) => {
 		data: params
 	})
 }
+
+export const judgeUpload = (openId?: any) => {
+	return request({
+		url: 'api/personal/judgeWhetherNull',
+		method: 'POST',
+		header: {
+			'Content-type': 'application/json'
+		},
+		data: {
+			openId
+		}
+	})
+}

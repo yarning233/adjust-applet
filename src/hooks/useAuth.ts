@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import Toast from '../utils/useToast'
 import { wxLogin, getPhone } from '../api/login'
 import { AuthType } from '../types/auth'
+import judge from "./useJudge"
 
 export const useAuth = (state: AuthType) => {
 	// 授权个人信息
@@ -31,6 +32,8 @@ export const useAuth = (state: AuthType) => {
 					state.openId = openId
 					state.avatarUrl = avatarUrl
 					state.nickName = nickName
+
+					judge()
 
 					// 将遮罩层状态取反
 					state.overlayShow = !state.overlayShow

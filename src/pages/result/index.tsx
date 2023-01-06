@@ -2,10 +2,12 @@
 import { defineComponent, ref, reactive, watch, onMounted } from 'vue'
 // @ts-ignore
 import type { Ref } from 'vue'
+import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
 import { ResultType } from "../../types/adjust"
 import ResultList from "../../components/result-list"
 import { queryCollegeList } from '../../api/adjust'
+import useToast from "../../utils/useToast"
 
 const Result = defineComponent({
 	components: { ResultList },
@@ -37,6 +39,14 @@ const Result = defineComponent({
 
 		const customHasMore = ref<boolean>(true)
 
+		const dialogVisible = ref<boolean>(false)
+
+		const dialogOk = () => {
+			Taro.switchTab({
+				url: '/pages/index/index'
+			})
+		}
+
 		const customLoadMore = async (done?: Function) => {
 			const res = await queryCollegeList({
 				year: years.value[state.tab11value],
@@ -58,8 +68,16 @@ const Result = defineComponent({
 			}
 		}
 
-		onMounted(() => {
-			customLoadMore()
+		onMounted(async () => {
+			const examineType = Taro.getStorageSync('examineType')
+
+			if (examineType === '0' || examineType === '2' || examineType === '') {
+				useToast('您尚未解锁全站会员')
+
+				dialogVisible.value = true
+			} else {
+				customLoadMore()
+			}
 		})
 
 		return () => (
@@ -91,6 +109,16 @@ const Result = defineComponent({
 						</ul>
 					</view>
 				</view>
+
+				<nut-dialog
+					teleport="#app"
+					title="提示"
+					content="您尚未解锁全站会员，请解锁后再进行使用"
+					visible={ dialogVisible.value }
+					noCancelBtn={ true }
+					onOk={ dialogOk }
+				>
+				</nut-dialog>
 			</view>
 		)
 	}

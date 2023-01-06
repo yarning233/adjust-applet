@@ -16,7 +16,9 @@ import { Button,
   Uploader,
   Progress,
   Empty,
-  OverLay
+  OverLay,
+  Dialog,
+  Popup
 } from '@nutui/nutui-taro'
 
 import './app.scss'
@@ -45,5 +47,7 @@ App.use(Button)
   .use(Progress)
   .use(Empty)
   .use(OverLay)
+  .use(Dialog)
+  .use(Popup)
 
 export default App

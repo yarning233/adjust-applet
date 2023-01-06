@@ -4,10 +4,12 @@ import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
 import DataChart from "../../components/data-chart"
 import { ChartQueryType } from '../../types/adjust/index'
-import { queryAdjustList, scoreOverTheYears } from '../../api/adjust'
+import {queryAdjustList, scoreOverTheYears} from '../../api/adjust'
 import ECanvas from '../../components/ec-canvas/index'
 import { useAuth } from '../../hooks/useAuth'
 import { AuthType } from '../../types/auth'
+import useToast from '../../utils/useToast'
+import judge from './../../hooks/useJudge'
 
 export default {
 	name: 'Index',
@@ -40,21 +42,39 @@ export default {
 		const years = ref<string[]>(['2023', '2022', '2021', '2020', '2019', '2018'])
 
 		const goCollegePage = () => {
-			Taro.navigateTo({
-				url: '/pages/college/index'
-			})
+			const examineType = Taro.getStorageSync('examineType')
+			
+			if (examineType === '0' || examineType === '2' || !examineType) {
+				useToast('您尚未解锁全站会员')
+			} else {
+				Taro.navigateTo({
+					url: '/pages/college/index'
+				})
+			}
 		}
 
 		const goCategoryPage = () => {
-			Taro.navigateTo({
-				url: '/pages/category/index'
-			})
+			const examineType = Taro.getStorageSync('examineType')
+
+			if (examineType === '0' || examineType === '2' || !examineType) {
+				useToast('您尚未解锁全站会员')
+			} else {
+				Taro.navigateTo({
+					url: '/pages/category/index'
+				})
+			}
 		}
 
 		const goSearchResultPage = () => {
-			Taro.switchTab({
-				url: '/pages/result/index'
-			})
+			const examineType = Taro.getStorageSync('examineType')
+
+			if (examineType === '0' || examineType === '2' || !examineType) {
+				useToast('您尚未解锁全站会员')
+			} else {
+				Taro.switchTab({
+					url: '/pages/result/index'
+				})
+			}
 		}
 
 		const goMyContentPage = () => {
@@ -241,6 +261,7 @@ export default {
 			})
 			queryAdjustChartData()
 			queryScoreLine()
+			judge()
 		})
 
 		return () => (
@@ -256,7 +277,9 @@ export default {
 							<nut-button type="primary" onClick={ getUserProfile }>授权个人信息免费解锁</nut-button> :
 						!authState.phone ?
 							<nut-button type="primary" openType="getPhoneNumber" onGetphonenumber={ getPhoneNumber }>授权手机号免费解锁</nut-button> :
-							<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button>
+						Taro.getStorageSync('examineType') !== '1' ?
+							<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button> :
+							<nut-button type="primary">您已解锁</nut-button>
 					}
 				</view>
 
