@@ -119,7 +119,7 @@ export default {
 
 						collegeOption.value = {
 							title: {
-								text: `全国一共有 ${ count } + 所院校参与调剂`,
+								text: `全国一共有 ${ count ? count : 0 } + 所院校参与调剂`,
 								left: 'center'
 							},
 							tooltip: {
@@ -179,7 +179,7 @@ export default {
 
 					majorOption.value = {
 						title: {
-							text: `全国一共有 ${ majorDataCount } + 专业参与调剂`,
+							text: `全国一共有 ${ majorDataCount ? majorDataCount : 0  } + 专业参与调剂`,
 							left: 'center'
 						},
 						tooltip: {
