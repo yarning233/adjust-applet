@@ -3,13 +3,14 @@ import { defineComponent, ref, onMounted, reactive } from 'vue'
 import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
 import {backPicture, getOssSign, insterAdd} from '../../api/adjust'
-import useToast from "../../utils/useToast";
+import useToast from "../../utils/useToast"
+import judge from '../../hooks/useJudge'
 
 const MyContent = defineComponent({
 	setup() {
 		const gif = 'https://kaoyancun.oss-cn-hangzhou.aliyuncs.com/tiaoji/chuo.gif'
 
-		const fileList = ref<File[]>([])
+		const fileList = ref<string[]>([])
 		const fileUploadList = ref<string[]>([])
 		const uploadList = ref<string[]>(['1','2'])
 		const ossSign = reactive({
@@ -63,13 +64,27 @@ const MyContent = defineComponent({
 		}
 
 		const unlock = () => {
-			if ( fileUploadList.value.length !== 2 ) {
-				useToast('必须上传两张图片')
+			const examineType = Taro.getStorageSync('examineType')
+
+			if (examineType === '') {
+				if (fileUploadList.value.length !== 2) {
+					useToast('必须上传两张图片')
+				} else {
+					insterAddHandle()
+					getImg()
+
+					Taro.navigateBack({
+						delta: 1
+					})
+				}
 			} else {
-				insterAddHandle()
-				getImg()
+				useToast('您已上传成功，请等待审核消息')
 			}
 		}
+
+		onMounted(() => {
+			judge()
+		})
 
 		const chooseImage = async () => {
 			Taro.chooseImage({
