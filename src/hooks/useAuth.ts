@@ -51,9 +51,13 @@ export const useAuth = (state: AuthType) => {
 			state.overlayShow = false
 			state.phone = res.data.phone
 
-			Taro.navigateTo({
-				url: '/pages/myContent/index'
-			})
+			const examineType = Taro.getStorageSync('examineType')
+
+			if (examineType === '') {
+				Taro.navigateTo({
+					url: '/pages/myContent/index'
+				})
+			}
 		}
 	}
 
