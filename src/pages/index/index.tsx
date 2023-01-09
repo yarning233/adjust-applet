@@ -30,6 +30,7 @@ export default {
 			avatarUrl: Taro.getStorageSync('avatarUrl'),
 			nickName: Taro.getStorageSync('nickName'),
 			openId: Taro.getStorageSync('openId'),
+			phone: Taro.getStorageSync('phone'),
 			overlayShow: false
 		})
 
