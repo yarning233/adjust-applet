@@ -250,6 +250,12 @@ export default {
 			}
 		}
 
+		const goAdvancePage = () => {
+			Taro.navigateTo({
+				url: '/pages/advance/index'
+			})
+		}
+
 		onMounted(() => {
 			Taro.login({
 				success: function (res) {
@@ -321,7 +327,9 @@ export default {
 				</view>
 
 				{/*	广告 */}
-				<view class={ styles.advance }></view>
+				<view class={ styles.advance } onClick={ goAdvancePage }>
+					<image mode="widthFix" src={ 'https://kaoyancun.oss-cn-hangzhou.aliyuncs.com/tiaoji/fushi-advance.png' }  class={ styles.advanceImg }/>
+				</view>
 
 				{/* 历年分数线 */}
 				<view class={ styles.fractionContain }>

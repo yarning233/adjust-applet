@@ -36,7 +36,7 @@ const FindContent = defineComponent({
 			<view class={ styles.contentContain }>
 				{
 					imagesData.value.map(img => {
-						return <img src={ img } alt="image" class={ styles.contentImage }/>
+						return <image src={ img } mode="widthFix" class={ styles.contentImage } showMenuByLongpress={ true }/>
 					})
 				}
 				<view class={ styles.fixBox }>

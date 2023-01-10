@@ -19,7 +19,7 @@ const Result = defineComponent({
 		})
 
 		const keyWord = ref<string>('')
-		const years = ref<string[]>(['2022', '2021', '2020', '2019', '2018'])
+		const years = ref<string[]>(['2023','2022', '2021', '2020', '2019', '2018'])
 		const currentPage = ref<number>(0)
 		const pageSize = ref<number>(10)
 
@@ -28,12 +28,14 @@ const Result = defineComponent({
 		const search = () => {
 			currentPage.value = 0
 			customList.value = []
+			customHasMore.value = true
 			customLoadMore()
 		}
 
 		const resetChange = () => {
 			currentPage.value = 0
 			customList.value = []
+			customHasMore.value = true
 			customLoadMore()
 		}
 

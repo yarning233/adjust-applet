@@ -7,7 +7,8 @@ export default defineAppConfig({
     'pages/find/index',
     'pages/findContent/index',
     'pages/my/index',
-    'pages/myContent/index'
+    'pages/myContent/index',
+    'pages/advance/index'
   ],
   window: {
     backgroundTextStyle: 'light',

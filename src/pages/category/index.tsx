@@ -18,7 +18,7 @@ const Category = defineComponent({
 			tab11value: '0'
 		})
 		const keyWord = ref<string>('')
-		const years = ref<string[]>(['2022', '2021', '2020', '2019', '2018'])
+		const years = ref<string[]>(['2023','2022', '2021', '2020', '2019', '2018'])
 
 		const customList = ref<ResultType[]>([])
 
@@ -118,7 +118,7 @@ const Category = defineComponent({
 				collegeCategoryRef.value.toggleAll(false)
 			}
 
-			customLoadMore()
+			autoQuery()
 		}
 
 		const changeCollegeProvince = () => {
@@ -128,7 +128,7 @@ const Category = defineComponent({
 				collegeProvinceRef.value.toggleAll(false)
 			}
 
-			customLoadMore()
+			autoQuery()
 		}
 
 		const currentPage = ref<number>(0)
@@ -138,12 +138,19 @@ const Category = defineComponent({
 		const resetChange = () => {
 			currentPage.value = 0
 			customList.value = []
-			customLoadMore()
+			autoQuery()
 		}
 
 		const search = () => {
 			currentPage.value = 0
 			customList.value = []
+			autoQuery()
+		}
+
+		const autoQuery = () => {
+			currentPage.value = 0
+			customList.value = []
+			customHasMore.value = true
 			customLoadMore()
 		}
 
@@ -171,7 +178,7 @@ const Category = defineComponent({
 		}
 
 		onMounted(() => {
-			customLoadMore()
+			autoQuery()
 		})
 
 		return () => (

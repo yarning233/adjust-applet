@@ -107,10 +107,14 @@
 
 .advance {
   width: 90%;
-  height: 100px;
   margin: 20px auto;
-  background-color: $primary-color-end;
-  border-radius: 15px;
+
+  .advanceImg {
+    display: flex;
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+  }
 }
 
 .fractionContain {
