@@ -67,10 +67,10 @@ const queryAdjustChartData = async () => {
 						trigger: 'item'
 					},
 					color: [
-						'#158AD2',
-						'#69BFFF',
-						'#50ADA3',
-						'#00DEAE'
+						"#5470c6",
+						"#91cc75",
+						"#fac858",
+						"#ee6666"
 					],
 					series: [
 						{
@@ -108,14 +108,15 @@ const queryAdjustChartData = async () => {
 					trigger: 'item'
 				},
 				color: [
-					'#158AD2',
-					'#E34890',
-					'#37C190',
-					'#00D9DB',
-					'#158AD2',
-					'#A94BA0',
-					'#C8628C',
-					'#00DEAE'
+					'#5470c6',
+					'#91cc75',
+					'#fac858',
+					'#ee6666',
+					'#73c0de',
+					'#3ba272',
+					'#fc8452',
+					'#9a60b4',
+					'#ea7ccc'
 				],
 				series: [
 					{
@@ -155,7 +156,7 @@ const queryScoreLine = async () => {
 			yAxis: {
 				type: 'value'
 			},
-			color: 'darkcyan',
+			color: 'orange',
 			series: [
 				{
 					data: scoreLineValueData,
