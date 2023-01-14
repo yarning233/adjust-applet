@@ -7,8 +7,8 @@ import styles from './index.module.scss'
 import { ResultType } from "../../types/adjust"
 import ResultList from "../../components/result-list"
 import { queryCollegeList } from '../../api/adjust'
-import useToast from "../../utils/useToast"
-import judge from "../../hooks/useJudge"
+// import useToast from "../../utils/useToast"
+// import judge from "../../hooks/useJudge"
 
 const Result = defineComponent({
 	components: { ResultList },
@@ -72,16 +72,17 @@ const Result = defineComponent({
 		}
 
 		onMounted(async () => {
-			await judge()
-			const examineType = Taro.getStorageSync('examineType')
-
-			if (examineType === '0' || examineType === '2' || examineType === '') {
-				useToast('您尚未解锁全站会员')
-
-				dialogVisible.value = true
-			} else {
-				await customLoadMore()
-			}
+			// await judge()
+			// const examineType = Taro.getStorageSync('examineType')
+			//
+			// if (examineType === '0' || examineType === '2' || examineType === '') {
+			// 	useToast('您尚未解锁全站会员')
+			//
+			// 	dialogVisible.value = true
+			// } else {
+			// 	await customLoadMore()
+			// }
+			await customLoadMore()
 		})
 
 		return () => (
