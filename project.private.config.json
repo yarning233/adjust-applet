@@ -11,8 +11,8 @@
         "miniprogram": {
             "list": [
                 {
-                    "name": "pages/myContent/index",
-                    "pathName": "pages/myContent/index",
+                    "name": "pages/index/index",
+                    "pathName": "pages/index/index",
                     "query": "",
                     "launchMode": "default",
                     "scene": null

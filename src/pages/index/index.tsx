@@ -11,7 +11,7 @@ import {
 	goCollegePage,
 	goCategoryPage,
 	goSearchResultPage,
-	goMyContentPage,
+	// goMyContentPage,
 	goAdvancePage
 } from '../../hooks/index/useNavigate'
 import {
@@ -44,11 +44,8 @@ export default {
 					}
 				}
 			})
-			Promise.all([
-				queryAdjustChartData(),
-				queryScoreLine()
-				// judge()
-			])
+			queryAdjustChartData()
+			queryScoreLine()
 		})
 
 		return () => (
@@ -57,18 +54,18 @@ export default {
 					<span class={styles.headerLogo}>NEWS</span> 2023 考研复试系统正式开启!
 				</view>
 
-				{/*<view class={styles.vipBox}>*/}
-				{/*	<view>一站通 会员</view>*/}
-				{/*	{*/}
-				{/*		!authState.openId ?*/}
-				{/*			<nut-button type="primary" onClick={ getUserProfile }>授权个人信息免费解锁</nut-button> :*/}
-				{/*			!authState.phone ?*/}
-				{/*				<nut-button type="primary" openType="getPhoneNumber" onGetphonenumber={ getPhoneNumber }>授权手机号免费解锁</nut-button> :*/}
-				{/*				Taro.getStorageSync('examineType') !== '1' ?*/}
-				{/*					<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button> :*/}
-				{/*					<nut-button type="primary">您已解锁</nut-button>*/}
-				{/*	}*/}
-				{/*</view>*/}
+				<view class={styles.vipBox}>
+					<view>一站通 会员</view>
+					{
+						!authState.openId ?
+							<nut-button type="primary" onClick={ getUserProfile }>授权个人信息免费解锁</nut-button> :
+							!authState.phone ?
+								<nut-button type="primary" openType="getPhoneNumber" onGetphonenumber={ getPhoneNumber }>授权手机号免费解锁</nut-button> :
+								// Taro.getStorageSync('examineType') !== '1' ?
+								// 	<nut-button type="primary" onClick={ goMyContentPage }>免费解锁</nut-button> :
+								<nut-button type="primary">您已解锁</nut-button>
+					}
+				</view>
 
 				<view class={styles.searchBar} onClick={ goSearchResultPage }>输入院校名称、专业名称等关键字搜索</view>
 
