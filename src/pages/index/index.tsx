@@ -89,7 +89,7 @@ export default {
 								<view class={ styles.pieChartContent }>
 									<data-chart ref={ chartRef } option={ collegeOption } />
 								</view>
-								<nut-button type="primary" block onClick={ goCollegePage }>立即查看</nut-button>
+								<nut-button type="primary" block={ true } onClick={ goCollegePage }>立即查看</nut-button>
 							</view>
 						</nut-tabpane>
 						<nut-tabpane title="专业" style={"backgroundColor: none"}>
@@ -97,7 +97,7 @@ export default {
 								<view class={styles.pieChartContent}>
 									<data-chart ref={ majorChartRef } option={ majorOption } />
 								</view>
-								<nut-button type="primary" block onClick={ goCategoryPage }>立即查看</nut-button>
+								<nut-button type="primary" block={ true } onClick={ goCategoryPage }>立即查看</nut-button>
 							</view>
 						</nut-tabpane>
 					</nut-tabs>
