@@ -1,9 +1,13 @@
 {
   "nuxt.isNuxtApp": false,
   "cSpell.words": [
+    "checkboxgroup",
     "echarts",
+    "Getphonenumber",
+    "infiniteloading",
     "inster",
     "noticebar",
+    "searchbar",
     "tabpane",
     "tarojs",
     "tiaoji"

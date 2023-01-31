@@ -36,6 +36,7 @@ export const useAuth = (state: AuthType) => {
 					judge()
 
 					// 将遮罩层状态取反
+					state.dialogVisible = !state.dialogVisible
 					state.overlayShow = !state.overlayShow
 				}
 			}
@@ -50,14 +51,6 @@ export const useAuth = (state: AuthType) => {
 			Taro.setStorageSync('userId', res.data.userId)
 			state.overlayShow = false
 			state.phone = res.data.phone
-
-			const examineType = Taro.getStorageSync('examineType')
-
-			if (examineType === '') {
-				Taro.navigateTo({
-					url: '/pages/myContent/index'
-				})
-			}
 		}
 	}
 
