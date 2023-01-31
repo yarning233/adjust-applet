@@ -29,7 +29,7 @@ const AuthPopup = defineComponent({
 				<nut-overlay visible={authState.overlayShow} zIndex={2000} closeOnClickOverlay={false}>
 					<view class={ styles.wrapper }>
 						<view class={ styles.wrapperContent }>
-							<view>请允许小程序获取您的手机号码，以便为您提供更好的服务</view>
+							<view>系统内涵盖近六年超100W条调剂数据，授权手机号第一时间看最新调剂资讯</view>
 							<nut-button type="primary" openType="getPhoneNumber"
 													onGetphonenumber={ getPhoneNumber }>同意授权获取手机号
 							</nut-button>
