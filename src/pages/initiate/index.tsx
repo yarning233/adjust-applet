@@ -13,6 +13,12 @@ const Initiate = defineComponent({
 			})
 		}
 
+		const goAdvancePage= () => {
+			Taro.navigateTo({
+				url: '/pages/advance/index'
+			})
+		}
+
 		onMounted(() => {
 			const timer = setInterval(() => {
 				second.value -= 1
@@ -25,7 +31,7 @@ const Initiate = defineComponent({
 		})
 
 		return () => (
-			<view class={ styles.contain }>
+			<view class={ styles.contain } onClick={ goAdvancePage }>
 				<view class={ styles.close } onClick={ goIndex }>
 					{ second.value }S
 					<nut-icon name="close" size={'12px'}></nut-icon>
